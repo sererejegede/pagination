@@ -1,0 +1,67 @@
+<div class="container-fluid">
+  <div class="row m-4">
+    <div class="col-md-8 offset-md-2 col-sm-12">
+      <h1>Data Table</h1>
+      <div class="row">
+        <div class="col-6">
+          <select class="form-control form-control-sm mb-1 col-3" (change)="changePerPage($event.target.value)">
+            <option value="10">10</option>
+            <option value="15">15</option>
+            <option value="20">20</option>
+            <option value="50">50</option>
+          </select>
+        </div>
+        <div class="col-6">
+          <input type="text" (keyup)="model_search.next($event.target.value)" class="form-control form-control-sm col-6 float-right" placeholder="Search">
+        </div>
+      </div>
+      <table class="table table-sm table-striped table-hover table-bordered mb-3 relative">
+        <div *ngIf="load" class="table-loader">
+          <div class="content">
+            <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+          </div>
+        </div>
+        <thead>
+        <tr>
+          <th>#</th>
+          <th>Name</th>
+          <th>Code</th>
+          <th>Date Created</th>
+          <th>Date Updated</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngIf="records?.data?.length === 0 || load">
+          <td *ngIf="load" colspan="5" class="text-center">Loading...</td>
+          <td *ngIf="!load && records?.data?.length === 0"  colspan="5" class="text-center">No data!</td>
+        </tr>
+        <tr *ngFor="let record of records?.data; let i = index">
+          <td>{{ i+1 }}</td>
+          <td>{{ record?.name }}</td>
+          <td>{{ record?.code }}</td>
+          <td>{{ record?.created_at | date }}</td>
+          <td>{{ record?.updated_at | date }}</td>
+        </tr>
+        </tbody>
+      </table>
+      <div class="row">
+        <div class="col-6">
+          <div class="float-left">
+            <span class="align-middle">Showing {{ records?.from }} to {{ records?.to }} of {{ records?.total }} entries</span>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="float-right">
+            <button class="btn btn-sm btn-outline-secondary" (click)="navigate('first')">First</button>
+            <button class="btn btn-sm btn-outline-secondary pr-1" (click)="navigate('prev')" [disabled]="records?.prev_page_url === null"><</button>
+            <div class="btn-group" role="group" aria-label="First group">
+              <button [ngClass]=" (page === records?.current_page) ? 'btn btn-sm btn-outline-secondary active' : 'btn btn-sm btn-outline-secondary'" *ngFor="let page of paginator.pages" (click)="navigate(page)">{{ page }}</button>
+            </div>
+            <button class="btn btn-sm btn-outline-secondary pl-1" (click)="navigate('next')" [disabled]="records?.next_page_url === null">></button>
+            <button class="btn btn-sm btn-outline-secondary" (click)="navigate('last')">Last</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
