@@ -18,7 +18,7 @@ export class DatatableComponent implements OnInit{
   public test = false;
   public records: any;
   private path = 'https://ws.educhoicetest.com.ng/api/v1/profile/country?origin=crysto-portal.educhoicetest.com.ng';
-  private paginator = {
+  public paginator = {
     per_page: 10,
     page_number: null,
     search: '',
@@ -26,9 +26,6 @@ export class DatatableComponent implements OnInit{
   };
   model_search: Subject<string> = new Subject<string>();
   value: any;
-  dtOptions: DataTables.Settings = {};
-  dtTrigger: Subject<any> = new Subject();
-  // dtElement: DataTableDirective = new DataTableDirective(this.el);
 
   constructor(private http: HttpClient,
               private el: ElementRef){
