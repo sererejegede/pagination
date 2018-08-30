@@ -2,6 +2,7 @@ import { Component, OnInit, Inject, forwardRef, ElementRef } from '@angular/core
 import { DOCUMENT } from '@angular/common';
 import { HttpClient } from "@angular/common/http";
 import { Subject } from "rxjs/Subject";
+import { DataTableService } from '../data-table.service';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 
@@ -28,7 +29,8 @@ export class DatatableComponent implements OnInit{
   value: any;
 
   constructor(private http: HttpClient,
-              private el: ElementRef){
+              private el: ElementRef,
+              private dataTableService: DataTableService){
     this.model_search.debounceTime(500)
                      .distinctUntilChanged()
                      .subscribe(search => {
@@ -44,35 +46,13 @@ export class DatatableComponent implements OnInit{
   }
 
   public navigate (page) {
-    this.paginator.page_number = parseInt(page, 10);
-    switch (page) {
-      case 'first':
-        this.paginator.page_number = parseInt(this.records.first_page_url.split('page=')[1], 10);
-        break;
-      case 'last':
-        this.paginator.page_number = this.records.last_page;
-        break;
-      case 'prev':
-        this.paginator.page_number = parseInt(this.records.prev_page_url.split('page=')[1], 10);
-        break;
-      case 'next':
-        this.paginator.page_number = parseInt(this.records.next_page_url.split('page=')[1], 10);
-        break;
-      default:
-        // code...
-        break;
-    }
+    this.dataTableService.navigate(page);
     this.initTable();
   }
 
   public changePerPage (num) {
-    this.paginator.per_page = num;
+    this.dataTableService.changePerPage(num);
     this.initTable();
-  }
-
-  public searchTable () {
-    this.initTable();
-    this.paginator.page_number = null;
   }
 
   public initTable () {
@@ -89,22 +69,9 @@ export class DatatableComponent implements OnInit{
   }
 
   private setPagination () {
-    if (this.records.current_page > 3) {
-      if ((this.records.last_page - this.records.current_page) <= 3) {
-        this.paginator.pages = [];
-        for (let i = 0; i < 5; i++) {
-           this.paginator.pages[i] = this.records.last_page - i;
-        }
-        this.paginator.pages.reverse();
-      } else {
-        for (let i = 0; i < 5; i++) {
-          this.paginator.pages[i] = this.records.current_page + i - 2;
-        }
-      }
-    } else {
-      this.paginator.pages = [1, 2, 3, 4, 5];
-    }
-    (this.records.next_page_url === null && this.records.prev_page_url === null) ? this.paginator.pages = [1] : '';
+    this.dataTableService.laravelPaginationObject = this.records;
+    this.dataTableService.setPagination();
+    this.paginator = this.dataTableService.paginator;
   }
 
   goToPlace(){
