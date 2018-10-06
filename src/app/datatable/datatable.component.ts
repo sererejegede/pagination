@@ -1,5 +1,4 @@
 import { Component, OnInit, Inject, forwardRef, ElementRef } from '@angular/core';
-import { DOCUMENT } from '@angular/common';
 import { HttpClient } from "@angular/common/http";
 import { Subject } from "rxjs/Subject";
 import { DataTableService } from '../data-table.service';
@@ -42,7 +41,7 @@ export class DatatableComponent implements OnInit{
   }
 
   ngOnInit(): void {
-   this.initTable(); 
+   this.initTable();
   }
 
   public navigate (page) {
