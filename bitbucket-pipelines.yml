@@ -17,7 +17,7 @@ pipelines:
         name: Building
         script:
           - npm install -g @angular/cli
-          - ng build
+          - ng build --base-href=/datatable/
     - step:
         name: Deployment
         script:
