@@ -20,12 +20,10 @@ pipelines:
           - npm install
           - ng build --base-href=/datatable/
     - step:
-        name: Deployment 1
+        name: Deployment
         script:
           - apt-get update
           - apt-get install ncftp
-    - step:
-        name: Deployment 2
-        script:
           - ncftpput -v -u "$ftpusername" -p "$ftppassword" -R $ftphost $ftpsiteroot dist/*
           - echo Finished uploading /dist files to $ftphost$ftpsiteroot
+
