@@ -12,11 +12,11 @@ pipelines:
         caches:
           - node
         script: # Modify the commands below to build your repository.
+          - npm install -g @angular/cli@1.7.4
           - npm install
     - step:
         name: Building
         script:
-          - npm install -g @angular/cli@1.7.4
           - ng build --base-href=/datatable/
     - step:
         name: Deployment
