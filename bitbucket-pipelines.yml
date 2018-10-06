@@ -24,7 +24,5 @@ pipelines:
         script:
           - apt-get-update
           - apt-get install ncftp
-          - ncftpput -v -u "$FTP_USERNAME" -p "$FTP_PASSWORD" -R $FTP_HOST $FTP_SITE_ROOT dist/*
-          - echo Finished uploading /dist files to $FTP_HOST$FTP_SITE_ROOT
-
-
+          - ncftpput -v -u "$ftpusername" -p "$ftppassword" -R $ftphost $ftpsiteroot dist/*
+          - echo Finished uploading /dist files to $ftphost$ftpsiteroot
